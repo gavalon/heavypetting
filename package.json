@@ -1,0 +1,25 @@
+{
+  "name": "heavypetting",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "socket.io": "^1.7.3",
+    "express": "^4.14.1",
+    "mysql": "^2.13.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gavalon/heavypetting.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gavalon/heavypetting/issues"
+  },
+  "homepage": "https://github.com/gavalon/heavypetting#readme"
+}
