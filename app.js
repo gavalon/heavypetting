@@ -15,11 +15,21 @@ if (!String.prototype.format) {
 
 const express = require('express'),
     exphbs  = require('express-handlebars'), // "express-handlebars"
-    Handlebars = require('handlebars')
+    Handlebars = require('handlebars'),
+    mysql = require("mysql"),
+    bodyParser = require("body-parser")
+
+
 
 const app = express();
 
 app.use(express.static(__dirname + '/public'));
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
@@ -35,6 +45,22 @@ app.get('/', function (req, res) {
         }
     })
 });
+
+app.post("/post.html", function(req,res) {
+    var connection = mysql.createConnection({
+        host : '104.154.148.252',
+        user : 'grant',
+        password : 'chickfila',
+        database : 'sandsoftime'
+    });
+    var pet_name = req.body.petname;
+    var mins = req.body.mins;
+    var seconds = Math.round(mins*60);
+    var sql_query = "UPDATE deathtable SET death_time=death_time+" + seconds + " WHERE animal_name='" + pet_name + "'";
+    console.log(sql_query);
+    connection.query(sql_query,function(err, reply){
+    });
+});    
 
 
 app.listen(3000, function () {
