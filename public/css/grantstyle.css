@@ -1,3 +1,51 @@
+#video_frame {
+  position: absolute;
+  left: 0px;
+  padding: 0;
+  height: 70vh;
+}
+
+#video_frame2 {
+  position: absolute;
+  left: 50vw;
+  padding: 0;
+  height: 70vh;
+}
+
+#name { 
+   position: absolute; 
+   top: 0vh; 
+   left: 5vw; 
+   width: 100%; 
+}
+
+#clock { 
+   position: absolute; 
+   top: 0vh; 
+   left: 35vw; 
+   width: 100%; 
+}
+
+#money {
+  position: absolute; 
+    top: 45vh; 
+    left: 10vw; 
+    width: 100%; 
+}
+
+h2 span { 
+   color: white; 
+   font: bold 24px/45px Helvetica, Sans-Serif; 
+   letter-spacing: -1px;  
+   background: rgb(0, 0, 0); /* fallback color */
+   background: rgba(0, 0, 0, 0.7);
+   padding: 10px; 
+}
+
+input {
+  width:5vw;
+  color: black;
+}
 
 
 .navbar-brand,
