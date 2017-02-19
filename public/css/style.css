@@ -1,0 +1,14 @@
+body {
+    color: red;
+}
+
+.noclick {
+	pointer-events: none;
+	height: 100%;
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
+	margin-bottom:-4px
+}
