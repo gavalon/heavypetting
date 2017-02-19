@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/grantstyle.css">
   <link rel="stylesheet" type="text/css" href="css/style.css" /> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
   <script>
   	if (!String.prototype.format) {
 	  String.prototype.format = function() {
@@ -41,97 +43,126 @@
 
 	<div id="demo"><h1>Text</h1></div>
 	<script src="http://localhost:8081/socket.io/socket.io.js"></script>
-	<script async src="https://www.youtube.com/iframe_api"></script>
 	<script> 
-
+		
 		var animal_data = null;
 
 		function render_page(animal_data) {
-		    document.getElementById("body").innerHTML = makeCellList(animal_data);
-		    muteVideos()
+		    //document.getElementById("body").innerHTML = makeCellList(animal_data);
 		}
 
 		function update_page(animal_data) {
+			for (i=0; i < animal_data.length; i++){
+				makeVideoCell(animal_data[i], i);
+			}
 			return 
 		}
 
 		var socket = io.connect("localhost:8081");
-		socket.on("death_stuff", function(death_stuff) { 
+		socket.on("death_stuff", function(death_stuff) {
 			if (!animal_data) {
-				animal_data = death_stuff.animal_data
-				render_page(animal_data)
-				muteVideos(animal_data)
-			} else {
 				update_page(death_stuff.animal_data);
+				var animal_data = death_stuff.animal_data;
+				render_page(animal_data);
+			} else {
+				if (death_stuff.animal_data != animal_data) {
+					update_page(death_stuff.animal_data);
+					var animal_data = death_stuff.animal_data;
+				}	
 			}
 		});
 
-		function muteVideos(animal_data) {
-			for (i in animal_data) {
-				animal = animal_data[i]
-				document.getElementById("video{0}".format(animal.id)).mute();
+
+		function set_time(death_time,animal_id){
+			var date = new Date(null);
+			n = Math.floor(Date.now()/1000);
+			diff = death_time - n;
+			q = date.setSeconds(diff);
+			var result = date.toISOString().substr(11, 8);
+			document.getElementById("time"+animal_id).innerHTML = result;
+		}
+
+
+		function makeVideoCell(animal, animal_id) {
+			var gif_id = animal.video_url;
+			var x = document.getElementById('tester'+animal_id).getAttribute("name");
+			var name = animal.animal_name;
+			document.getElementById("name"+animal_id).innerHTML = name;
+			var death_time = animal.death_time;
+			set_time(death_time,animal_id);
+			if (x != name) {
+				document.getElementById('framer'+animal_id).innerHTML = '<iframe src="//giphy.com/embed/' + gif_id + '" width="100%" height="100%" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>';
+
+				document.getElementById('tester'+animal_id).setAttribute("name", name);
+
 			}
-		}
-
-
-		function get_document_height() {
-			var body = document.body,
-    			html = document.documentElement;
-			return Math.max( body.scrollHeight, body.offsetHeight, 
-                       html.clientHeight, html.scrollHeight, html.offsetHeight );
-		}
-
-
-		function get_document_width() {
-			var body = document.body,
-    			html = document.documentElement;
-			return Math.max( body.scrollWidth, body.offsetWidth, 
-                       html.scrollWidth, html.offsetWidth );
-		}
-
-		function get_position_for_rank(rank) {
-			const h = get_document_height()
-			const w = get_document_width()
-			return [w * (rank % 2), h * Math.floor(rank/2)]
-			//position from: left, top 
-		}
-
-
-		function makeCellList(animals) {
-			video_divs = animals.map((animal) => 
-				'<div class="noclick">{0}</div></div>'.format(makeVideoCell(animal))
-			)
-
-			let video_html = '<div class="animal_cells">'
-			for (i in video_divs) {
-				video_html += video_divs[i];
-			}
-			video_html += '</div>'
-			return video_html
-		}
-
-
-		function makeVideoCell(animal) {
-			return '<iframe id='{0}' src="//giphy.com/embed/{1}" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>'.format(animal.id, animal.video_id)
 		}
 
 
 	</script> 
 
-<div id="video_frame" class="col-md-6">	
-	<iframe width="100%" 			height="100%" 			src="https://www.youtube.com/embed/kfchvCyHmsc?loop=1&rel=0&version=3&autoplay=1&controls=0&showinfo=0&playlist=kfchvCyHmsc" 			frameborder="0"> 		</iframe>
-	<h2 id="name"><span>Fido</span></h2>
-	<h2 id="clock"><span>01:34:52</span></h2>
-	<h2 id="money"><span>$ <input type="text" name="dollars" id="dollars" value=" "> = <input readonly="readonly" name="time" id="time" value=" "> Minutes</span><button type="button" class="btn btn-danger" style="margin-left:5%;">Donate</button></h2>
-	
+
+
+
+
+
+
+
+
+
+<div id="video_frame0" class="col-md-6">	
+	<span id="tester0"></span>
+	<span id="framer0"></span>
+	<h2 class="name"><span id="name0"></span></h2>
+	<h2 class="clock"><span id="time0"></span></h2>
+	<h2 class="money"><span>$ <input type="text" name="dollars" id="dollars" value=" "> = <input readonly="readonly" name="time" id="time" value=" "> Minutes</span><button type="button" class="btn btn-danger" style="margin-left:5%;">Donate</button></h2>
 </div>	
 
-<div id="video_frame2" class="col-md-6">	
-	<iframe width="100%" 			height="100%" 			src="https://www.youtube.com/embed/8ZSAurNw4yA?loop=1&rel=0&version=3&autoplay=1&controls=0&showinfo=0&playlist=kfchvCyHmsc" 			frameborder="0"> 		</iframe>
-	<h2 id="name"><span>Kevin</span></h2>
-	<h2 id="clock"><span>02:11:11</span></h2>
-	<h2 id="money"><span>$ <input type="text" name="dollars" id="dollars" value=" "> = <input type="text" name="time" id="time" value=" "> Minutes</span><button type="button" class="btn btn-danger" style="margin-left:5%;">Donate</button></h2>
+<div id="video_frame1" class="col-md-6">
+	<span id="tester1"></span>	
+	<span id="framer1"></span>
+	<h2 class="name"><span id="name1"></span></h2>
+	<h2 class="clock"><span id="time1"></span></h2>
+	<h2 class="money"><span>$ <input type="text" name="dollars" id="dollars" value=" "> = <input readonly="readonly" name="time" id="time" value=" "> Minutes</span><button type="button" class="btn btn-danger" style="margin-left:5%;">Donate</button></h2>
 </div>	
+
+
+<div id="video_frame2" class="col-md-6">
+	<span id="tester2"></span>	
+	<span id="framer2"></span>
+	<h2 class="name"><span id="name2"></span></h2>
+	<h2 class="clock"><span id="time2"></span></h2>
+	<h2 class="money"><span>$ <input type="text" name="dollars" id="dollars" value=" "> = <input readonly="readonly" name="time" id="time" value=" "> Minutes</span><button type="button" class="btn btn-danger" style="margin-left:5%;">Donate</button></h2>
+</div>	
+
+<div id="video_frame3" class="col-md-6">	
+	<span id="tester3"></span>
+	<span id="framer3"></span>
+	<h2 class="name"><span id="name3"></span></h2>
+	<h2 class="clock"><span id="time3"></span></h2>
+	<h2 class="money"><span>$ <input type="text" name="dollars" id="dollars" value=" "> = <input readonly="readonly" name="time" id="time" value=" "> Minutes</span><button type="button" class="btn btn-danger" style="margin-left:5%;">Donate</button></h2>
+</div>	
+
+<div id="video_frame4" class="col-md-6">
+	<span id="tester4"></span>	
+	<span id="framer4"></span>
+	<h2 class="name"><span id="name4"></span></h2>
+	<h2 class="clock"><span id="time4"></span></h2>
+	<h2 class="money"><span>$ <input type="text" name="dollars" id="dollars" value=" "> = <input readonly="readonly" name="time" id="time" value=" "> Minutes</span><button type="button" class="btn btn-danger" style="margin-left:5%;">Donate</button></h2>
+</div>	
+
+<div id="video_frame5" class="col-md-6">
+	<span id="tester5"></span>	
+	<span id="framer5"></span>
+	<h2 class="name"><span id="name5"></span></h2>
+	<h2 class="clock" ><span id="time5"></span></h2>
+	<h2 class="money"><span>$ <input type="text" name="dollars" id="dollars" value=" "> = <input readonly="readonly" name="time" id="time" value=" "> Minutes</span><button type="button" class="btn btn-danger" style="margin-left:5%;">Donate</button></h2>
+</div>	
+
+
+
+
+
     {{{body}}}
   </body>
 </html>

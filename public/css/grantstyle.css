@@ -1,32 +1,29 @@
-#video_frame {
-  position: absolute;
-  left: 0px;
-  padding: 0;
+.col-md-6 {
   height: 70vh;
+  padding: 0;
 }
 
-#video_frame2 {
-  position: absolute;
-  left: 50vw;
-  padding: 0;
-  height: 70vh;
+
+iframe {
+  height: 100%;
+  width: 100%;
 }
 
-#name { 
+.name { 
    position: absolute; 
-   top: 0vh; 
+   top: 5vh; 
    left: 5vw; 
    width: 100%; 
 }
 
-#clock { 
+.clock { 
    position: absolute; 
-   top: 0vh; 
+   top: 5vh; 
    left: 35vw; 
    width: 100%; 
 }
 
-#money {
+.money {
   position: absolute; 
     top: 45vh; 
     left: 10vw; 
