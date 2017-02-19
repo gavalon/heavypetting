@@ -4,72 +4,71 @@
   <meta charset="utf-8"> 
   <title>Example App</title> 
   <link rel="stylesheet" type="text/css" href="css/style.css" /> 
+  <script>
+  	if (!String.prototype.format) {
+	  String.prototype.format = function() {
+	    var args = arguments;
+	    return this.replace(/{(\d+)}/g, function(match, number) { 
+	      return typeof args[number] != 'undefined'
+	        ? args[number]
+	        : match
+	      ;
+	    });
+	  };
+	}
+  </script>
 </head> 
   <body> 
-	<div id="demo"><h1>Text</h1></div>
 	<script src="http://localhost:8081/socket.io/socket.io.js"></script>
 	<script async src="https://www.youtube.com/iframe_api"></script>
 	<script> 
 
-		function testing(animal_data) {
-		    document.getElementById("demo").innerHTML = animal_data[0].id;
+		var animal_data = null;
+
+		function render_page(animal_data) {
+		    document.getElementById("body").innerHTML = makeCellList(animal_data);
+		    muteVideos()
 		}
 
-		var socket = io.connect("localhost:8081"); 
+		function update_page(animal_data) {
+			return 
+		}
+
+		var socket = io.connect("localhost:8081");
 		socket.on("death_stuff", function(death_stuff) { 
-		    testing(death_stuff.animal_data);
+			if (!animal_data) {
+				animal_data = death_stuff.animal_data
+				render_page(animal_data)
+				muteVideos(animal_data)
+			} else {
+				update_page(death_stuff.animal_data);
+			}
 		});
 
-		function muteVideos() {
-
-		}
-
-		function makeVideoGrid(videos) {
-		    const rows = []
-		    for (var i = 0; i < videos.length/2 - 1; i++) {
-		        rows.push({'html':'<div class="row">{0}{1}</div>'.format(videos[2*i], videos[2*i+1])})
-		    }
-		    if (rows.length % 2 == 1) {
-		        rows.push({'html':'<div class="row">{0}</div>'.format(videos[videos.length - 1])})
-		    }
-
-			let source = '<div id="wrap">'
-			for (row in rows) {
-				source += row
+		function muteVideos(animal_data) {
+			for (i in animal_data) {
+				animal = animal_data[i]
+				document.getElementById("video{0}".format(animal.id)).mute();
 			}
-			source += '</div>'
-			return source
 		}
 
-		function makeVideoCell(rank, video_id, start_time, stop_time) {
-		  var player;
-		  player = new YT.Player('video' + rank, {
-		    videoId: video_id,// YouTube Video ID
-		    width: 560,               // Player width (in px)
-		    height: 316,              // Player height (in px)
-		    playerVars: {
-		      autoplay: 1,        // Auto-play the video on load
-		      controls: 0,        // Show pause/play buttons in player
-		      showinfo: 0,        // Hide the video title
-		      modestbranding: 1,  // Hide the Youtube Logo
-		      loop: 1,            // Run the video in a loop
-		      fs: 0,              // Hide the full screen button
-		      cc_load_policy: 0, // Hide closed captions
-		      iv_load_policy: 3,  // Hide the Video Annotations
-		    },
-		    events: {
-		      onReady: function(e) {
-		        e.target.mute();
-		      }
-		    }
-		  });
-		 }
+		function makeCellList(animals) {
+			video_divs = animals.map((animal) => 
+				'<div class="noclick">{0}</div></div>'.format(makeVideoCell(animal))
+			)
+
+			let video_html = '<div class="animal_cells">'
+			for (i in video_divs) {
+				video_html += video_divs[i];
+			}
+			video_html += '</div>'
+			return video_html
 		}
 
-		function onYouTubeIframeAPIReady() {
-			YT_ready = true;
-		}
 
+		function makeVideoCell(animal) {
+			return '<iframe id='{0}' src="//giphy.com/embed/{1}" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>'.format(animal.id, animal.video_id)
+		}
 	</script> 
     {{{body}}}
   </body>

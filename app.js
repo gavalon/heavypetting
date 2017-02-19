@@ -31,7 +31,7 @@ app.get('/', function (req, res) {
         helpers:
         {
             'socket_connection': function() { return '' },
-            'video_tiles': function() { return body }
+            'video_tiles': function() { return '<div id="body"></div>' }
         }
     })
 });
