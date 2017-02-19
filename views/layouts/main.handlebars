@@ -3,9 +3,29 @@
 <head> 
   <meta charset="utf-8"> 
   <title>Example App</title> 
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/grantstyle.css">
   <link rel="stylesheet" type="text/css" href="css/style.css" /> 
 </head> 
   <body> 
+  	<nav class="navbar navbar-default navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+    			<span class="sr-only">Toggle navigation</span>
+    			<span class="icon-bar"></span>
+    			<span class="icon-bar"></span>
+    			<span class="icon-bar"></span>
+  			</button>
+  			<a class="navbar-brand" href="#">
+  				<img style="max-width:100px; margin-top:-15px;"
+  				src="img/dog-icon.png" />
+  			</a>
+		</div>
+		
+	</div>
+</nav>
+
 	<div id="demo"><h1>Text</h1></div>
 	<script src="http://localhost:8081/socket.io/socket.io.js"></script>
 	<script async src="https://www.youtube.com/iframe_api"></script>
