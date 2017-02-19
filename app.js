@@ -75,6 +75,16 @@ const makePage = (body) => '\
 	  <link rel="stylesheet" type="text/css" href="css/style.css" /> \
 	</head> \
 	  <body> \
+        <div id="demo"></div> \
+        <script> \
+            function testing(animal_data){ \
+                document.getElementById("demo").innerHTML = animal_data; \
+            } \
+            var socket = io.connect("8081"); \
+            socket.on("death_stuff", function(death_stuff){ \
+                testing(death_stuff.animal_data); \
+            }); \
+        </script> \
 	\
 	    {0} \
 	\
