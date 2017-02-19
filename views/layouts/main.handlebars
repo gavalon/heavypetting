@@ -1,13 +1,76 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Example App</title>
-  <link rel="stylesheet" type="text/css" href="css/style.css" />
-</head>
-  <body>
+<!DOCTYPE html> 
+<html> 
+<head> 
+  <meta charset="utf-8"> 
+  <title>Example App</title> 
+  <link rel="stylesheet" type="text/css" href="css/style.css" /> 
+</head> 
+  <body> 
+	<div id="demo"><h1>Text</h1></div>
+	<script src="http://localhost:8081/socket.io/socket.io.js"></script>
+	<script async src="https://www.youtube.com/iframe_api"></script>
+	<script> 
 
+		function testing(animal_data) {
+		    document.getElementById("demo").innerHTML = animal_data[0].id;
+		}
+
+		var socket = io.connect("localhost:8081"); 
+		socket.on("death_stuff", function(death_stuff) { 
+		    testing(death_stuff.animal_data);
+		});
+
+		function muteVideos() {
+
+		}
+
+		function makeVideoGrid(videos) {
+		    const rows = []
+		    for (var i = 0; i < videos.length/2 - 1; i++) {
+		        rows.push({'html':'<div class="row">{0}{1}</div>'.format(videos[2*i], videos[2*i+1])})
+		    }
+		    if (rows.length % 2 == 1) {
+		        rows.push({'html':'<div class="row">{0}</div>'.format(videos[videos.length - 1])})
+		    }
+
+			let source = '<div id="wrap">'
+			for (row in rows) {
+				source += row
+			}
+			source += '</div>'
+			return source
+		}
+
+		function makeVideoCell(rank, video_id, start_time, stop_time) {
+		  var player;
+		  player = new YT.Player('video' + rank, {
+		    videoId: video_id,// YouTube Video ID
+		    width: 560,               // Player width (in px)
+		    height: 316,              // Player height (in px)
+		    playerVars: {
+		      autoplay: 1,        // Auto-play the video on load
+		      controls: 0,        // Show pause/play buttons in player
+		      showinfo: 0,        // Hide the video title
+		      modestbranding: 1,  // Hide the Youtube Logo
+		      loop: 1,            // Run the video in a loop
+		      fs: 0,              // Hide the full screen button
+		      cc_load_policy: 0, // Hide closed captions
+		      iv_load_policy: 3,  // Hide the Video Annotations
+		    },
+		    events: {
+		      onReady: function(e) {
+		        e.target.mute();
+		      }
+		    }
+		  });
+		 }
+		}
+
+		function onYouTubeIframeAPIReady() {
+			YT_ready = true;
+		}
+
+	</script> 
     {{{body}}}
-
   </body>
 </html>

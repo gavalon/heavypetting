@@ -25,17 +25,21 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 app.get('/', function (req, res) {
-
 	const videos = [0, 1, 2, 3, 4, 5, 6].map(makeVideoCell)
 	const body = makeVideoGrid(videos)
-    res.send(makePage(body))
+    res.render('home', {
+        helpers:
+        {
+            'socket_connection': function() { return '' },
+            'video_tiles': function() { return body }
+        }
+    })
 });
 
 
 app.listen(3000, function () {
     console.log('server listening on: 3000');
 });
-
 
 
 function makeVideoGrid(videos) {
