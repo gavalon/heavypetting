@@ -73,6 +73,30 @@
 			}
 		}
 
+
+		function get_document_height() {
+			var body = document.body,
+    			html = document.documentElement;
+			return Math.max( body.scrollHeight, body.offsetHeight, 
+                       html.clientHeight, html.scrollHeight, html.offsetHeight );
+		}
+
+
+		function get_document_width() {
+			var body = document.body,
+    			html = document.documentElement;
+			return Math.max( body.scrollWidth, body.offsetWidth, 
+                       html.scrollWidth, html.offsetWidth );
+		}
+
+		function get_position_for_rank(rank) {
+			const h = get_document_height()
+			const w = get_document_width()
+			return [w * (rank % 2), h * Math.floor(rank/2)]
+			//position from: left, top 
+		}
+
+
 		function makeCellList(animals) {
 			video_divs = animals.map((animal) => 
 				'<div class="noclick">{0}</div></div>'.format(makeVideoCell(animal))
@@ -90,6 +114,8 @@
 		function makeVideoCell(animal) {
 			return '<iframe id='{0}' src="//giphy.com/embed/{1}" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>'.format(animal.id, animal.video_id)
 		}
+
+
 	</script> 
     {{{body}}}
   </body>
