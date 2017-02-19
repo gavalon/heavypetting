@@ -75,12 +75,13 @@ const makePage = (body) => '\
 	  <link rel="stylesheet" type="text/css" href="css/style.css" /> \
 	</head> \
 	  <body> \
-        <div id="demo"></div> \
+        <div id="demo"><h1>Text</h1></div> \
+        <script src="http://localhost:8081/socket.io/socket.io.js"></script> \
         <script> \
-            function testing(animal_data){ \
-                document.getElementById("demo").innerHTML = animal_data; \
+            function testing(animal_data){  \
+                document.getElementById("demo").innerHTML = animal_data[0].id; \
             } \
-            var socket = io.connect("8081"); \
+            var socket = io.connect("localhost:8081"); \
             socket.on("death_stuff", function(death_stuff){ \
                 testing(death_stuff.animal_data); \
             }); \

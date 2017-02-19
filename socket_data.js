@@ -24,7 +24,6 @@ var connection = mysql.createConnection({
 var eventHandler = function(socket){
 	setInterval(function(){
     connection.query("SELECT * FROM deathtable ORDER BY death_time",function(err, reply){
-		console.log(reply);
 		socket.emit("death_stuff",{animal_data:reply});
 	});
 	}, 1000)
