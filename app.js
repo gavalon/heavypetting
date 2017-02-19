@@ -36,7 +36,11 @@ app.listen(3000, function () {
     console.log('server listening on: 3000');
 });
 
+var socket = io.connect(8081);
 
+socket.on("death_stuff", function(death_stuff){
+    console.log("got stuff!", death_stuff)
+});
 
 function makeVideoGrid(videos) {
 
